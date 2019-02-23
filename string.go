@@ -1,6 +1,30 @@
 package goutil
 
-import "strconv"
+import (
+    "strconv"
+    "io/ioutil"
+    "bytes"
+    "golang.org/x/text/encoding/simplifiedchinese"
+    "golang.org/x/text/transform"
+)
+
+func Utf8ToGbk(s []byte) ([]byte, error) {
+    reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewEncoder())
+    d, e := ioutil.ReadAll(reader)
+    if e != nil {
+        return nil, e
+    }
+    return d, nil
+}
+
+func GbkToUtf8(s []byte) ([]byte, error) {
+    reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewDecoder())
+    d, e := ioutil.ReadAll(reader)
+    if e != nil {
+        return nil, e
+    }
+    return d, nil
+}
 
 //截取字符串 start 起点下标 length 需要截取的长度
 func Substr(str string, start int, length int) string {

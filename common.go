@@ -5,7 +5,23 @@ import (
 	"reflect"
 	"strconv"
 	"time"
+	"os/exec"
+	"os"
+	"path/filepath"
 )
+
+/*获取当前文件执行的路径*/
+func GetCurPath() string {
+	file, _ := exec.LookPath(os.Args[0])
+
+	//得到全路径，比如在windows下E:\\golang\\test\\a.exe
+	path, _ := filepath.Abs(file)
+
+	rst := filepath.Dir(path)
+
+	return rst
+}
+
 // Empty 判断一个值是否为空(0, "", false, 空数组等)。
 // []string{""}空数组里套一个空字符串，不会被判断为空。
 func Empty(expr interface{}) bool {

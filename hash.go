@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 	"crypto/rand"
-	"golang.org/x/crypto/scrypt"
+	"github.com/golang/crypto/scrypt"
 )
 
 const pwHashBytes = 64

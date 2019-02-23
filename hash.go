@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"crypto/rand"
-	"github.com/golang/crypto/scrypt"
 )
 
 const pwHashBytes = 64
@@ -33,13 +32,4 @@ func GenerateSalt() (salt string, err error) {
 	}
 
 	return fmt.Sprintf("%x", buf), nil
-}
-
-func GeneratePassHash(password string, salt string) (hash string, err error) {
-	h, err := scrypt.Key([]byte(password), []byte(salt), 16384, 8, 1, pwHashBytes)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("%x", h), nil
 }

@@ -4,6 +4,8 @@ import (
 	"math"
 	"math/rand"
 	"time"
+    "strconv"
+    "fmt"
 )
 
 // 随机数生成
@@ -23,6 +25,12 @@ func RandInt(min int, max int) int {
 func Round(f float64, n int) float64 {
 	n10 := math.Pow10(n)
 	return math.Trunc((f+0.5/n10)*n10) / n10
+}
+
+//小数仅保留2位
+func Decimal(value float64) float64 {
+    value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+    return value
 }
 
 //生成随机字符串

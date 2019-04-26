@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"os"
 	"path/filepath"
+    "strings"
 )
 
 /*获取当前文件执行的路径*/
@@ -284,6 +285,22 @@ func HumpToSnake(word string) (outWord string) {
 	return
 }
 
+//String Map合并
+func StringMapMerge(par map[string]string,pars ...map[string]string) map[string]string {
+
+	if len(pars) == 0{
+		return par
+	}
+
+	for _,tmp := range pars{
+
+		for k,v := range tmp  {
+			par[k] = v
+		}
+	}
+	return par
+}
+
 //sturct to map
 func StructToMap(obj interface{}) map[string]interface{} {
 	obj1 := reflect.TypeOf(obj)
@@ -294,4 +311,8 @@ func StructToMap(obj interface{}) map[string]interface{} {
 		data[HumpToSnake(obj1.Field(i).Name)] = obj2.Field(i).Interface()
 	}
 	return data
+}
+
+func ArrayToStr(array []int) string {
+    return strings.Replace(strings.Trim(fmt.Sprint(array), "[]"), " ", ",", -1)
 }

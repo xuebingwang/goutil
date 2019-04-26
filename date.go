@@ -4,6 +4,11 @@ import (
 	"time"
 )
 
+const (
+	DATE_FORMAT = "2006-01-02"
+	DATEHM_FORMAT = "2006-01-02 15:04"
+	DATEHMI_FORMAT = "2006-01-02 15:04:05"
+)
 //获取传入的时间所在月份的第一天，即某月第一天的0点。如传入time.Now(), 返回当前月份的第一天0点时间。
 func GetFirstDateOfMonth(d time.Time) time.Time {
 	d = d.AddDate(0, 0, -d.Day() + 1)
@@ -21,7 +26,7 @@ func GetZeroTime(d time.Time) time.Time {
 
 //日期转时间
 func StringToTime(toBeCharge string) time.Time {
-	timeLayout := "2006-01-02 15:04:05"
+	timeLayout := DATEHMI_FORMAT
 	//loc,_ := time.LoadLocation("local")
 
 	theTime,_ := time.ParseInLocation(timeLayout,toBeCharge,time.Local)
@@ -44,7 +49,7 @@ func GetDate(timestamp int64) string {
 		return ""
 	}
 	tm := time.Unix(timestamp, 0)
-	return tm.Format("2006-01-02")
+	return tm.Format(DATE_FORMAT)
 }
 
 //时间戳转日期
@@ -53,7 +58,7 @@ func GetDateMHI(timestamp int64) string {
 		return ""
 	}
 	tm := time.Unix(timestamp, 0)
-	return tm.Format("2006-01-02 15:04:05")
+	return tm.Format(DATEHMI_FORMAT)
 }
 
 //时间戳转日期，没有秒
@@ -62,25 +67,35 @@ func GetDateMH(timestamp int64) string {
 		return ""
 	}
 	tm := time.Unix(timestamp, 0)
-	return tm.Format("2006-01-02 15:04")
+	return tm.Format(DATEHM_FORMAT)
 }
 
-//日期转时间戳
+//日期转时间戳,包含时分秒，参数格式必须相同，如2006-01-02 15:04:05
 func GetTimeParse(times string) int64 {
 	if "" == times {
 		return 0
 	}
 	loc, _ := time.LoadLocation("Local")
-	parse, _ := time.ParseInLocation("2006-01-02 15:04:05", times, loc)
+	parse, _ := time.ParseInLocation(DATEHMI_FORMAT, times, loc)
 	return parse.Unix()
 }
 
-//日期转时间戳，不包含时分秒
-func GetDateParse(dates string) int64 {
-	if "" == dates {
+//根据给的日期和格式转时间戳，参数格式如2006-01-02 15:04:05
+func GetDateParse(date string,tpl string) int64 {
+	if "" == date {
 		return 0
 	}
 	loc, _ := time.LoadLocation("Local")
-	parse, _ := time.ParseInLocation("2006-01-02", dates, loc)
+	parse, _ := time.ParseInLocation(tpl, date, loc)
 	return parse.Unix()
+}
+
+//根据给的日期和格式转换
+func DateTodate(date string,tpl string,tpl2 string) string {
+	if "" == date {
+		return ""
+	}
+	loc, _ := time.LoadLocation("Local")
+	parse, _ := time.ParseInLocation(tpl, date, loc)
+	return parse.Format(tpl2)
 }
